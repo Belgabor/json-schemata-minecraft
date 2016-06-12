@@ -1,0 +1,108 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+	"title": "Quadrum Item schema",
+	"type": "object",
+  "properties": {
+    "name": {
+      "description": "Internal name of the item",
+      "type": "string"
+    },
+    "texture": {
+      "description": "Texture for the item (texture must exist in the texture folder found inside the items folder)",
+      "type": "string"
+    },
+    "type": {
+      "description": "Type of item",
+      "enum": ["item", "food", "drink"]
+    },
+    "mob-drops": {
+      "description": "List of mobs that can drop this item, along with the probability of it being dropped",
+      "type": "object",
+      "patternProperties": {
+        ".+": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "lore": {
+      "description": "List of strings to be added to the Item's tooltip",
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1
+    },
+    "ore-dictionary": {
+      "description": "List of ore dictionary tags to be applied",
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "has-effect": {
+      "description": "Whether to display the enchantment glow",
+      "type": "boolean"
+    },
+    "consume-duration": {
+      "description": "(Only valid for food/drink items) Time it takes to consume this food",
+      "type": "integer",
+      "minimum": 0
+    },
+    "consume-effect": {
+      "description": "(Only valid for food/drink items) Potion effect to be applied upon consuming this item",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Potion id",
+          "type": "string"
+        },
+        "duration": {
+          "description": "Duration in SECONDS",
+          "type": "integer",
+          "minimum": 1
+        },
+        "amplifier": {
+          "description": "Amplifier starts at 0, so 1 is potion level 2",
+          "type": "integer",
+          "minimum": 0
+        },
+        "probability": {
+          "type": "number",
+          "minimum": 0,
+          "exclusiveMinimum": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "wolf-food": {
+      "description": "(Only valid for food items) Whether a wolf can consume this food",
+      "type": "boolean"
+    },
+    "food-amount": {
+      "description": "(Only valid for food items) Amount of hunger to restore upon eating this food",
+      "type": "integer",
+      "minimum": 0
+    },
+    "food-saturation": {
+      "description": "(Only valid for food items) Amount of hunger saturation to be applied upon eating this food (vanilla default is 0.6F)",
+      "type": "number",
+      "minimum": 0
+    },
+    "burn-time": {
+      "description": "Amount of time (if any) this item will supply if used as fuel",
+      "type": "integer",
+      "minimum": 0
+    },
+    "max-stack-size": {
+      "description": "Max stack-size of this item",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 64
+    },
+    "always-edible": {
+      "type": "boolean"
+    }
+  },
+  "required": ["name", "texture"],
+  "additionalProperties": false
+}

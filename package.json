@@ -1,0 +1,22 @@
+{
+  "name": "json-schemata-minecraft",
+  "main": "./lib/main",
+  "version": "0.0.0",
+  "description": "JSON schemata provider for several Minecraft mods",
+  "keywords": [],
+  "repository": "https://github.com/atom/autocomplete-json-minecraft",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+    "file-url": "^1.1.0"
+  },
+  "providedServices": {
+    "jsonschema.provider": {
+      "versions": {
+        "1.0.0": "schemaProvider"
+      }
+    }
+  }
+}

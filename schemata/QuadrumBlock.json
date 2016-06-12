@@ -1,0 +1,160 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+	"title": "Quadrum Block schema",
+	"type": "object",
+  "properties": {
+    "name": {
+      "description": "Internal name of the block",
+      "type": "string"
+    },
+    "default-texture": {
+      "description": "Default texture of the block (texture must exist in the texture folder found inside the blocks folder)",
+      "type": "string"
+    },
+    "texture-info": {
+      "description": "More detailed texture information",
+      "type": "object",
+      "properties": {
+        "front": {"type":"string"},
+        "back": {"type":"string"},
+        "left": {"type":"string"},
+        "right": {"type":"string"},
+        "top": {"type":"string"},
+        "bottom": {"type":"string"}
+      },
+      "additionalProperties": false
+    },
+    "mob-drops": {
+      "description": "List of mobs that can drop this item, along with the probability of it being dropped",
+      "type": "object",
+      "patternProperties": {
+        ".+": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "melting-data": {
+      "type": "object",
+      "properties": {
+        "fluid": {"type": "string"},
+        "light": {"type": "integer"}
+      },
+      "additionalProperties": false
+    },
+    "material": {
+      "description": "Material of the block",
+      "enum": ["stone", "rock", "wood", "ground", "dirt", "grass", "iron", "metal"]
+    },
+    "type": {
+      "description": "Type of block",
+      "enum": ["block", "slab", "stair", "fence", "wall"]
+    },
+    "ore-dictionary": {
+      "description": "List of ore dictionary tags to be applied",
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "drops": {
+      "description": "List of items to be dropped when this block is broken",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "item": {
+            "type": "string",
+            "pattern": "^.+:.+"
+          },
+          "damage": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "amount": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": ["item"],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "hardness": {
+      "description": "Hardness of this block (for reference, vanilla Stone is 1.5F)",
+      "type": "number",
+      "minimum": 0
+    },
+    "resistance": {
+      "description": "Explosion resistance of this block (for reference, Vanilla stone is 10F)",
+      "type": "number",
+      "minimum": 0
+    },
+    "slickness": {
+      "type": "number",
+      "minimum": 0
+    },
+    "light-level": {
+      "description": "Amount of light this block emits",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 15
+    },
+    "redstone-level": {
+      "description": "Amount of Redstone power this block emits",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 15
+    },
+    "burn-time": {
+      "description": "Amount of time (if any) this block will supply if used as fuel",
+      "type": "integer",
+      "minimum": 0
+    },
+    "max-stack-size": {
+      "description": "Max stack-size of this block",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 64
+    },
+    "mining-level": {
+      "description": "Harvest level required to successfully mine this block",
+      "type": "integer",
+      "minimum": 0
+    },
+    "transparent": {
+      "description": "Whether this block is transparent (texture has any fully or partially transparent pixels)",
+      "type": "boolean"
+    },
+    "collision": {
+      "description": "Whether this block can be collided with",
+      "type": "boolean"
+    },
+    "flammable": {
+      "description": "Whether this block can catch on fire",
+      "type": "boolean"
+    },
+    "soil": {
+      "description": "Whether this block can support plants",
+      "type": "boolean"
+    },
+    "requires-tool": {
+      "description": "Whether this block requires the appropriate tool in order to be mined up (type depends on material)",
+      "type": "boolean"
+    },
+    "drops-self": {
+      "description": "Whether this block drops itself when mined",
+      "type": "boolean"
+    },
+    "connected-texture": {
+      "type": "boolean"
+    },
+    "multipart": {
+      "type": "boolean"
+    }
+  },
+  "required": ["name", "default-texture", "material"],
+  "additionalProperties": false
+}

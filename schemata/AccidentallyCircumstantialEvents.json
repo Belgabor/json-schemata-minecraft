@@ -1,0 +1,103 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+	"title": "Accidentally Circumstantial Events events schema",
+	"type": "object",
+  "properties": {
+    "events": {
+      "type": "array",
+      "items": {"$ref": "#/definitions/Event"}
+    }
+  },
+  "required": ["events"],
+  "additionalProperties": false,
+  "definitions": {
+    "Event": {
+      "type": "object",
+      "oneOf": [
+        {
+          "properties": {
+            "event_type": {
+              "description": "Triggers when specific text is send in chat.",
+              "enum": ["CHAT"]
+            },
+            "text": {
+              "description": "text which triggers tasks",
+              "type": "string"
+            },
+            "tasks": {"$ref": "#/definitions/Tasks"}
+          },
+          "required": ["event_type", "text", "tasks"],
+          "additionalProperties": false
+        },
+        {
+          "properties": {
+            "event_type": {
+              "description": "Triggers when enderman is about to teleport or enderpearl is used by player.",
+              "enum": ["ENDER"]
+            },
+            "target": {
+              "enum": ["PLAYER", "ENDER"]
+            },
+            "tasks": {"$ref": "#/definitions/Tasks"}
+          },
+          "required": ["event_type", "target", "tasks"],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "Tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "oneOf": [
+          {
+            "properties": {
+              "task_type": {
+                "description": "Places block in world at specified location",
+                "enum": ["BLOCK"]
+              },
+              "modid": {"type": "string"},
+              "name": {"type": "string"},
+              "meta": {"type": "integer", "minimum": 0},
+              "location_type": {"enum": ["COORD", "SELF", "BLOCK"]},
+              "xCoord": {"type": "integer"},
+              "yCoord": {"type": "integer"},
+              "zCoord": {"type": "integer"},
+              "nbt": {"type": "string"},
+              "conditions": {"$ref": "#/definitions/Conditions"}
+            },
+            "required": ["modid", "name", "meta", "location_type", "xCoord", "yCoord", "zCoord"],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "minItems": 1
+    },
+    "Conditions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "oneOf": [
+          {
+            "properties": {
+              "condition_type": {
+                "description": "If player is in area defined by two points task will take place",
+                "enum": ["AREA"]
+              },
+              "reversed": {"type": "boolean"},
+              "startX": {"type": "integer"},
+              "startY": {"type": "integer"},
+              "startZ": {"type": "integer"},
+              "endX": {"type": "integer"},
+              "endY": {"type": "integer"},
+              "endZ": {"type": "integer"}
+            },
+            "required": ["condition_type", "startX", "startY", "startZ", "endX", "endY", "endZ"],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "minItems": 1
+    }
+  }
+}

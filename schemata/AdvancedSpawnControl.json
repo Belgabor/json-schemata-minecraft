@@ -1,0 +1,171 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+	"title": "Advanced Spawn Control schema",
+	"type": "object",
+	"properties": {
+		"Monster Max": {
+      "description": "This int sets the maximum number of 'monster' type mobs within a players spawn radius.",
+			"type": "integer",
+      "minimum": 0
+		},
+    "Creature Max": {
+      "description": "This int sets the maximum number of 'creature' type mobs within a players spawn radius.",
+			"type": "integer",
+      "minimum": 0
+		},
+    "Ambient Max": {
+      "description": "This int sets the maximum number of 'ambient' type mobs within a players spawn radius.",
+			"type": "integer",
+      "minimum": 0
+		},
+    "Water Creature Max": {
+      "description": "This int sets the maximum number of 'waterCreature' type mobs within a players spawn radius.",
+			"type": "integer",
+      "minimum": 0
+		},
+    "Remove All Mobs From All Biomes": {
+      "description": "This boolean sets if all mobs for all biomes should be removed from the spawn registry.",
+			"type": "boolean"
+		},
+    "Remove All Mobs From Biomes": {
+      "description": "This int array is used to set biomes which should have all mobs of all types removed from their spawn lists.",
+			"type": "array",
+      "items": {"type": "integer"}
+		},
+    "Remove Mobs From All Biomes": {
+      "description": "This String array is used to set entities which should be removed from all biomes. This removes all entities of all types with the stated name from all biomes.",
+			"type": "array",
+      "items": {"type": "string"}
+		},
+    "Spawns": {
+      "description": "This object array is used to add custom spawn information.",
+			"type": "array",
+      "items": {"$ref": "#/definitions/Spawn"}
+    },
+    "Blacklist All Entities": {
+      "description": "This boolean sets if all entities should be blacklisted. Any mob which is blacklisted but not whitelisted will be unable to spawn.",
+			"type": "boolean"
+    },
+    "Blacklist All Types": {
+      "description": "This boolean sets if all types should be blacklisted. Any mob of a blacklisted type which is not whitelisted will be unable to spawn.",
+			"type": "boolean"
+		},
+    "Dimension Blacklist": {
+      "description": "This Map is used for setting blacklists in specific dimensions. The value after the dimension id is a BWList object.",
+      "$ref": "#/definitions/DimBWList"
+    },
+    "All Dimension Blacklist": {
+      "description": "This List of BWList objects is used for setting blacklists for all dimensions.",
+      "$ref": "#/definitions/BWList"
+    },
+    "Dimension Whitelist": {
+      "description": "This Map is used for setting whitelists in specific dimensions. The value after the dimension id is a BWList object.",
+      "$ref": "#/definitions/DimBWList"
+    },
+    "Print All Registered Entities": {
+      "description": "Log all registered entity names.",
+			"type": "boolean"
+    }
+	},
+  "additionalProperties": false,
+  "definitions": {
+    "Spawn": {
+      "type": "object",
+      "properties": {
+        "Entity": {
+          "description": "This string is the name of the entity to be used. If not included, the contained object will either do nothing, or if being used to remove mobs from a biome, will count as ALL mobs.",
+          "type": "string"
+        },
+        "Weight": {
+          "description": "This Integer is used for the spawn weight. If not set, either the value in the already existing spawn entry will be used, or 100.",
+    			"type": "integer",
+          "minimum": 0
+        },
+        "Min": {
+          "description": "This Integer is used for the min group size. If not set, either the value in the already existing spawn entry will be used, or 4.",
+    			"type": "integer",
+          "minimum": 0
+        },
+        "Max": {
+          "description": "This Integer is used for the max group size. If not set, either the value in the already existing spawn entry will be used, or 4.",
+    			"type": "integer",
+          "minimum": 0
+        },
+        "Types": {
+          "description": "This String array is used for the mobs type. At least one type must be added, or the contained object will do nothing. Options: 'monster', 'creature', 'ambient', 'waterCreature'",
+    			"type": "array",
+          "items": {"enum": ["monster", "creature", "ambient", "waterCreature"]},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "Modify Only": {
+          "description": "This boolean sets if only existing spawn entries should be modified, and no new ones added. This is useful for if you want to modify the spawn entry for creepers in all biomes, but do not wish to accidentally add them to new biomes. Default: true",
+    			"type": "boolean"
+        },
+        "Add To Biomes": {
+          "description": "This int array is used for setting specific biomes to modify/add spawn entries in. If none are added, it will count as all biomes.",
+    			"type": "array",
+          "items": {"type": "integer"}
+        },
+        "Remove From All Biomes": {
+          "description": "This boolean sets if the specified mob of the specified type should be removed from all biomes. Default: false",
+    			"type": "boolean"
+        },
+        "Remove From Biomes": {
+          "description": "This int array is used for setting specific biomes to modify/add spawn entries in. If none are added, it will count as all biomes.",
+    			"type": "array",
+          "items": {"type": "integer"}
+        },
+        "Dimensions": {
+          "description": "This int array is used for setting specific dimensions to set spawns from this object in. All dimension specific spawns will override default ones. If no dimensions are specified, spawns in this object will be set for all dimensions.",
+    			"type": "array",
+          "items": {"type": "integer"}
+        }
+      },
+      "additionalProperties": false
+    },
+    "DimBWList": {
+      "type": "object",
+      "patternProperties": {
+        "^-?[0-9]+$": {"$ref": "#/definitions/BWList"}
+      },
+      "additionalProperties": false
+    },
+    "BWList": {
+      "type": "object",
+      "properties": {
+        "Entities": {
+          "description": "This String list is a list of entity names to be used.",
+    			"type": "array",
+          "items": {"type": "string"},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "Types": {
+          "description": "This String array is used for the mobs type. At least one type must be added, or the contained object will do nothing. Options: 'monster', 'creature', 'ambient', 'waterCreature'",
+    			"type": "array",
+          "items": {"enum": ["monster", "creature", "ambient", "waterCreature"]},
+          "minItems": 1,
+          "uniqueItems": true
+    		},
+        "Entities Of Types": {
+          "description": "This Map is a pairing of types and entities to be used.",
+          "type": "object",
+          "properties": {
+            "monster": {"$ref": "#/definitions/StringArray"},
+            "creature": {"$ref": "#/definitions/StringArray"},
+            "ambient": {"$ref": "#/definitions/StringArray"},
+            "waterCreature": {"$ref": "#/definitions/StringArray"}
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "StringArray": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  }
+}
