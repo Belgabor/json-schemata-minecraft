@@ -1,22 +1,32 @@
 {
-  "name": "json-schemata-minecraft",
-  "main": "./lib/main",
-  "version": "0.0.0",
-  "description": "JSON schemata provider for several Minecraft mods",
-  "keywords": [],
-  "repository": "https://github.com/atom/autocomplete-json-minecraft",
-  "license": "MIT",
-  "engines": {
-    "atom": ">=1.0.0 <2.0.0"
-  },
-  "dependencies": {
-    "file-url": "^1.1.0"
-  },
-  "providedServices": {
-    "jsonschema.provider": {
-      "versions": {
-        "1.0.0": "schemaProvider"
-      }
-    }
-  }
+	"name": "json-schemata-minecraft",
+	"version": "0.0.0",
+	"description": "JSON schemata provider for several Minecraft mods",
+	"keywords": [
+		"json",
+		"autocomplete"
+	],
+	"homepage": "https://github.com/Belgabor/json-schemata-minecraft#json-schemata-minecraft",
+	"bugs": {
+		"url": "https://github.com/Belgabor/json-schemata-minecraft/issues"
+	},
+	"license": "MIT",
+	"main": "./lib/main",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Belgabor/json-schemata-minecraft.git"
+	},
+	"dependencies": {
+		"file-url": "^1.1.0"
+	},
+	"engines": {
+		"atom": ">=1.0.0 <2.0.0"
+	},
+	"providedServices": {
+		"jsonschema.provider": {
+			"versions": {
+				"1.0.0": "schemaProvider"
+			}
+		}
+	}
 }
