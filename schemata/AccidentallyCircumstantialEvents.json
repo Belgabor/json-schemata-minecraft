@@ -42,6 +42,235 @@
           },
           "required": ["event_type", "target", "tasks"],
           "additionalProperties": false
+        },
+        {
+          "properties": {
+            "event_type": {
+              "description": "Triggers when player breaks block and drops are about to drop.",
+              "enum": ["HARVEST"]
+            },
+            "issuer": {
+              "description": "for whom event should trigger (ALL_PLAYERS, SELF, precise player name)",
+              "oneOf": [
+                {"enum": ["ALL_PLAYERS", "SELF"]},
+                {"type": "string"}
+              ]
+            },
+            "modid": {"type": "string"},
+            "name": {"type": "string"},
+            "meta": {"type": "integer", "minimum": 0},
+            "any": {
+              "description": "if present and equals to true then harvest will trigger only for issuer, no mod, block or meta checking",
+              "type": "boolean"
+            },
+            "tasks": {"$ref": "#/definitions/Tasks"}
+          },
+          "required": ["event_type", "issuer", "modid", "name", "meta", "tasks"],
+          "additionalProperties": false
+        },
+        {
+          "properties": {
+            "event_type": {
+              "description": "Triggers when player interacts with block or air.",
+              "enum": ["INTERACT"]
+            },
+            "action": {
+              "enum": ["LEFT", "RIGHT_BLOCK", "RIGHT_AIR"]
+            },
+            "issuer": {
+              "description": "for whom event should trigger (ALL_PLAYERS, SELF, precise player name)",
+              "oneOf": [
+                {"enum": ["ALL_PLAYERS", "SELF"]},
+                {"type": "string"}
+              ]
+            },
+            "modid": {"type": "string"},
+            "name": {"type": "string"},
+            "meta": {"type": "integer", "minimum": 0},
+            "ignoreBlock": {
+              "description": "if present and equals to true then the event will trigger only for issuer, no mod, block or meta checking",
+              "type": "boolean"
+            },
+            "tasks": {"$ref": "#/definitions/Tasks"}
+          },
+          "required": ["event_type", "action", "issuer", "modid", "name", "meta", "tasks"],
+          "additionalProperties": false
+        },
+        {
+          "properties": {
+            "event_type": {
+              "description": "Triggers when player drops item (default Q key).",
+              "enum": ["TOSS"]
+            },
+            "issuer": {
+              "description": "for whom event should trigger (ALL_PLAYERS, SELF, precise player name)",
+              "oneOf": [
+                {"enum": ["ALL_PLAYERS", "SELF"]},
+                {"type": "string"}
+              ]
+            },
+            "modid": {"type": "string"},
+            "name": {"type": "string"},
+            "meta": {"type": "integer", "minimum": 0},
+            "tasks": {"$ref": "#/definitions/Tasks"}
+          },
+          "required": ["event_type", "issuer", "modid", "name", "meta", "tasks"],
+          "additionalProperties": false
+        },
+        {
+          "properties": {
+            "event_type": {
+              "description": "Triggers when player joins world.",
+              "enum": ["JOIN_WORLD"]
+            },
+            "target": {
+              "description": "for whom event should trigger (ALL_PLAYERS, precise player name)",
+              "oneOf": [
+                {"enum": ["ALL_PLAYERS"]},
+                {"type": "string"}
+              ]
+            },
+            "noDeathDim": {
+              "description": "should event trigger only on loading game (true) or every dimmension change, death etc (false)",
+              "type": "boolean"
+            },
+            "joinOneEver": {
+              "description": "should event trigger only on first join to world ever (true)",
+              "type": "boolean"
+            },
+            "tasks": {"$ref": "#/definitions/Tasks"}
+          },
+          "required": ["event_type", "target", "noDeathDim", "joinOneEver", "tasks"],
+          "additionalProperties": false
+        },
+        {
+          "properties": {
+            "event_type": {
+              "description": "Triggers when certain interval of ticks passes based on world total time.",
+              "enum": ["TICK"]
+            },
+            "ticks": {
+              "description": "number of ticks between triggers",
+              "type": "integer",
+              "minimum": 1
+            },
+            "tasks": {"$ref": "#/definitions/Tasks"}
+          },
+          "required": ["event_type", "ticks", "tasks"],
+          "additionalProperties": false
+        },
+        {
+          "properties": {
+            "event_type": {
+              "description": "Triggers when some mod posts AceQuestEventAPI.",
+              "enum": ["QUEST"]
+            },
+            "modid": {
+              "description": "Mod for which quest was completed",
+              "type": "string"
+            },
+            "questid": {
+              "description": "Id of quest that was completed",
+              "type": "string"
+            },
+            "issuer": {
+              "description": "Player that completed the quest (ALL_PLAYERS, precise player name)",
+              "oneOf": [
+                {"enum": ["ALL_PLAYERS"]},
+                {"type": "string"}
+              ]
+            },
+            "tasks": {"$ref": "#/definitions/Tasks"}
+          },
+          "required": ["event_type", "modid", "questid", "issuer", "tasks"],
+          "additionalProperties": false
+        },
+        {
+          "properties": {
+            "event_type": {
+              "description": "Triggers when player gets achievement.",
+              "enum": ["ACHIEVEMENT"]
+            },
+            "issuer": {
+              "description": "for whom event should trigger (ALL_PLAYERS, SELF, precise player name)",
+              "oneOf": [
+                {"enum": ["ALL_PLAYERS", "SELF"]},
+                {"type": "string"}
+              ]
+            },
+            "achievement": {
+              "description": "as achievements statId (example achievement.openInventory)",
+              "type": "string"
+            },
+            "tasks": {"$ref": "#/definitions/Tasks"}
+          },
+          "required": ["event_type", "issuer", "achievement", "tasks"],
+          "additionalProperties": false
+        },
+        {
+          "properties": {
+            "event_type": {
+              "description": "Triggers when item despawns.",
+              "enum": ["EXPIRE"]
+            },
+            "modid": {
+              "description": "from whitch mod item comes from",
+              "type": "string"
+            },
+            "name": {
+              "description": "name of item",
+              "type": "string"
+            },
+            "meta": {"type": "integer", "minimum": 0},
+            "tasks": {"$ref": "#/definitions/Tasks"}
+          },
+          "required": ["event_type", "modid", "name", "meta", "tasks"],
+          "additionalProperties": false
+        },
+        {
+          "properties": {
+            "event_type": {
+              "description": "Triggers when entity dies.",
+              "enum": ["DEATH"]
+            },
+            "target": {
+              "description": "name of target (example: Pig, PLAYER, Zombie)",
+              "type": "string"
+            },
+            "tasks": {"$ref": "#/definitions/Tasks"}
+          },
+          "required": ["event_type", "target", "tasks"],
+          "additionalProperties": false
+        },
+        {
+          "properties": {
+            "event_type": {
+              "description": "Triggers when entity is droppping its drops.",
+              "enum": ["LIVING_DROPS"]
+            },
+            "target": {
+              "description": "name of target (example: Pig, PLAYER, Zombie)",
+              "type": "string"
+            },
+            "tasks": {"$ref": "#/definitions/Tasks"}
+          },
+          "required": ["event_type", "target", "tasks"],
+          "additionalProperties": false
+        },
+        {
+          "properties": {
+            "event_type": {
+              "description": "Triggers when player interacts with mob (right click it)",
+              "enum": ["INTERACT_ENT"]
+            },
+            "target": {
+              "description": "name of target (example: Pig, PLAYER, Zombie)",
+              "type": "string"
+            },
+            "tasks": {"$ref": "#/definitions/Tasks"}
+          },
+          "required": ["event_type", "target", "tasks"],
+          "additionalProperties": false
         }
       ]
     },
@@ -66,7 +295,409 @@
               "nbt": {"type": "string"},
               "conditions": {"$ref": "#/definitions/Conditions"}
             },
-            "required": ["modid", "name", "meta", "location_type", "xCoord", "yCoord", "zCoord"],
+            "required": ["task_type", "modid", "name", "meta", "location_type", "xCoord", "yCoord", "zCoord"],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "task_type": {
+                "description": "Cancels event which triggered task if it is cancelable",
+                "enum": ["CANCEL"]
+              },
+              "conditions": {"$ref": "#/definitions/Conditions"}
+            },
+            "required": ["task_type"],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "task_type": {
+                "description": "Displays chat message for specified players",
+                "enum": ["CHAT"]
+              },
+              "receiver_type": {
+                "description": "who should be target of tasks (ALL_PLAYERS, ONE_PLAYER, SELF)",
+                "enum": ["ALL_PLAYERS", "ONE_PLAYER", "SELF"]
+              },
+              "receiver": {
+                "description": "player name when ONE_PLAYER is specified",
+                "type": "string"
+              },
+              "message": {"type": "string"},
+              "conditions": {"$ref": "#/definitions/Conditions"}
+            },
+            "required": ["task_type", "receiver_type", "message"],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "task_type": {
+                "description": "Adds items to drops from Harvest event.",
+                "enum": ["HARVEST_ADD"]
+              },
+              "modid": {"type": "string"},
+              "name": {"type": "string"},
+              "meta": {"type": "integer", "minimum": 0},
+              "count": {"type": "integer", "minimum": 1},
+              "conditions": {"$ref": "#/definitions/Conditions"}
+            },
+            "required": ["task_type", "modid", "name", "meta", "count"],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "task_type": {
+                "description": "Clears all items from drops of Harvest event",
+                "enum": ["HARVEST_CLEAR"]
+              },
+              "conditions": {"$ref": "#/definitions/Conditions"}
+            },
+            "required": ["task_type"],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "task_type": {
+                "description": "Removes specified items from drops of Harvest event.",
+                "enum": ["HARVEST_REMOVE"]
+              },
+              "modid": {"type": "string"},
+              "name": {"type": "string"},
+              "meta": {"type": "integer", "minimum": 0},
+              "count": {"type": "integer", "minimum": 1},
+              "conditions": {"$ref": "#/definitions/Conditions"}
+            },
+            "required": ["task_type", "modid", "name", "meta", "count"],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "task_type": {
+                "description": "Adds items to specified players inventory",
+                "enum": ["INVENTORY_ADD"]
+              },
+              "target_type": {
+                "description": "who should be target of tasks (ALL_PLAYERS, ONE_PLAYER, SELF)",
+                "enum": ["ALL_PLAYERS", "ONE_PLAYER", "SELF"]
+              },
+              "target": {
+                "description": "player name when ONE_PLAYER is specified",
+                "type": "string"
+              },
+              "modid": {"type": "string"},
+              "name": {"type": "string"},
+              "meta": {"type": "integer", "minimum": 0},
+              "count": {"type": "integer", "minimum": 1},
+              "nbt": {
+                "description": "set nbt for item like in MC give command (http://minecraft.gamepedia.com/Commands#give)",
+                "type": "string"
+              },
+              "conditions": {"$ref": "#/definitions/Conditions"}
+            },
+            "required": ["task_type", "target_type", "target", "modid", "name", "meta", "count"],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "task_type": {
+                "description": "Removes items from specified players inventory",
+                "enum": ["INVENTORY_REMOVE"]
+              },
+              "target_type": {
+                "description": "who should be target of tasks (ALL_PLAYERS, ONE_PLAYER, SELF)",
+                "enum": ["ALL_PLAYERS", "ONE_PLAYER", "SELF"]
+              },
+              "target": {
+                "description": "player name when ONE_PLAYER is specified",
+                "type": "string"
+              },
+              "modid": {"type": "string"},
+              "name": {"type": "string"},
+              "meta": {"type": "integer", "minimum": 0},
+              "count": {"type": "integer", "minimum": 1},
+              "conditions": {"$ref": "#/definitions/Conditions"}
+            },
+            "required": ["task_type", "target_type", "target", "modid", "name", "meta", "count"],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "task_type": {
+                "description": "Drops stack of items/blocks at specified location",
+                "enum": ["ITEM"]
+              },
+              "modid": {"type": "string"},
+              "name": {"type": "string"},
+              "meta": {"type": "integer", "minimum": 0},
+              "count": {"type": "integer", "minimum": 1},
+              "location_type": {"enum": ["COORD", "SELF"]},
+              "xCoord": {"type": "integer"},
+              "yCoord": {"type": "integer"},
+              "zCoord": {"type": "integer"},
+              "conditions": {"$ref": "#/definitions/Conditions"}
+            },
+            "required": ["task_type", "modid", "name", "meta", "count", "location_type", "xCoord", "yCoord", "zCoord"],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "task_type": {
+                "description": "Applies potion effect to specified players",
+                "enum": ["POTION"]
+              },
+              "target_type": {
+                "description": "who should be target of tasks (ALL_PLAYERS, ONE_PLAYER, SELF)",
+                "enum": ["ALL_PLAYERS", "ONE_PLAYER", "SELF"]
+              },
+              "target": {
+                "description": "player name when ONE_PLAYER is specified",
+                "type": "string"
+              },
+              "id": {
+                "description": "id of potion",
+                "type": "integer",
+                "minimum": 0
+              },
+              "duration": {
+                "description": "duration in ticks",
+                "type": "integer",
+                "minimum": 1
+              },
+              "level": {
+                "description": "level of potion (eg for Strength 1 or 2)",
+                "type": "integer",
+                "minimum": 0
+              },
+              "conditions": {"$ref": "#/definitions/Conditions"}
+            },
+            "required": ["task_type", "target_type", "target", "id", "duration", "level"],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "task_type": {
+                "description": "Reloads ACE configuration",
+                "enum": ["RELOAD"]
+              },
+              "conditions": {"$ref": "#/definitions/Conditions"}
+            },
+            "required": ["task_type"],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "task_type": {
+                "description": "Spawns specified mob at location",
+                "enum": ["SPWN_MOB"]
+              },
+              "type": {
+                "description": "type of monster to zpawn (eg, Zombie, Wolf)",
+                "type": "string"
+              },
+              "location_type": {
+                "description": "values: COORD, SELF (leave coord parameters values as 0), RANDOM",
+                "enum": ["COORD", "SELF", "RANDOM"]
+              },
+              "radius": {
+                "description": "radius of randomization from player position",
+                "type": "integer",
+                "minimum": 0
+              },
+              "xCoord": {"type": "number"},
+              "yCoord": {"type": "number"},
+              "zCoord": {"type": "number"},
+              "nbt": {
+                "description": "set nbt for mob like in MC",
+                "type": "string"
+              },
+              "conditions": {"$ref": "#/definitions/Conditions"}
+            },
+            "required": ["task_type", "type", "location_type", "xCoord", "yCoord", "zCoord"],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "task_type": {
+                "description": "Dump items, block or entities into file to use in other tasks",
+                "enum": ["DUMP"]
+              },
+              "objectType": {
+                "description": "values: ITEM, BLOCK, ENTITY, ACHIEVEMENT (dumps statId values for triggers and conditions)",
+                "enum": ["ITEM", "BLOCK", "ENTITY", "ACHIEVEMENT"]
+              },
+              "conditions": {"$ref": "#/definitions/Conditions"}
+            },
+            "required": ["task_type", "objectType"],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "task_type": {
+                "description": "Sets time of current day",
+                "enum": ["TIME"]
+              },
+              "timeOfDay ": {
+                "description": "time of day to set (0-23999), greater values will progress day",
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 23999
+              },
+              "conditions": {"$ref": "#/definitions/Conditions"}
+            },
+            "required": ["task_type", "timeOfDay"],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "task_type": {
+                "description": "Runs specified / command. Cheats must be allowed.",
+                "enum": ["COMMAND"]
+              },
+              "command": {
+                "description": "string containing full command (eg. /seed)",
+                "type": "string"
+              },
+              "ignorePrivilages": {
+                "description": "if true commands will be performed as op;can be ommited and then assumed value is false",
+                "type": "boolean"
+              },
+              "conditions": {"$ref": "#/definitions/Conditions"}
+            },
+            "required": ["task_type", "command"],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "task_type": {
+                "description": "Playes specified and provided sound.",
+                "enum": ["SOUND"]
+              },
+              "name": {
+                "description": "name of sound file without .ogg",
+                "type": "string"
+              },
+              "player_type": {
+                "description": "for whom event should trigger (ALL_PLAYERS, precise player name)",
+                "oneOf": [
+                  {"enum": ["ALL_PLAYERS"]},
+                  {"type": "string"}
+                ]
+              },
+              "volume": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "pitch": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "conditions": {"$ref": "#/definitions/Conditions"}
+            },
+            "required": ["task_type", "name", "player_type", "volume", "pitch"],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "task_type": {
+                "description": "Changes value of variable.",
+                "enum": ["HANDLER_COUNT"]
+              },
+              "handlerIdentifier": {
+                "description": "name of variable",
+                "type": "string"
+              },
+              "operation": {
+                "description": "how to change value (+/- 1, set to 0)",
+                "enum": ["+", "-", "CLEAR"]
+              },
+              "conditions": {"$ref": "#/definitions/Conditions"}
+            },
+            "required": ["task_type", "handlerIdentifier", "operation"],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "task_type": {
+                "description": "Prints value of variable for player who initiated trigger.",
+                "enum": ["HANDLER_COUNT_CHAT"]
+              },
+              "handlerIdentifier": {
+                "description": "name of variable",
+                "type": "string"
+              },
+              "conditions": {"$ref": "#/definitions/Conditions"}
+            },
+            "required": ["task_type", "handlerIdentifier"],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "task_type": {
+                "description": "Sets item despawn time (currently only works with TOSS trigger).",
+                "enum": ["ITEM_NEW_LIFE"]
+              },
+              "newLife": {
+                "description": "number of ticks item despawn after",
+                "type": "integer",
+                "minimum": 1
+              },
+              "conditions": {"$ref": "#/definitions/Conditions"}
+            },
+            "required": ["task_type", "newLife"],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "task_type": {
+                "description": "Clears all drops from entity.",
+                "enum": ["DROPS_CLEAR"]
+              },
+              "conditions": {"$ref": "#/definitions/Conditions"}
+            },
+            "required": ["task_type"],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "task_type": {
+                "description": "Adds specified items to entity drops",
+                "enum": ["DROPS_ADD"]
+              },
+              "modid": {"type": "string"},
+              "name": {"type": "string"},
+              "meta": {"type": "integer", "minimum": 0},
+              "count": {"type": "integer", "minimum": 1},
+              "conditions": {"$ref": "#/definitions/Conditions"}
+            },
+            "required": ["task_type", "modid", "name", "meta", "count"],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "task_type": {
+                "description": "Removes defined items from entity drops",
+                "enum": ["DROPS_REMOVE"]
+              },
+              "modid": {"type": "string"},
+              "name": {"type": "string"},
+              "meta": {"type": "integer", "minimum": 0},
+              "count": {"type": "integer", "minimum": 1},
+              "conditions": {"$ref": "#/definitions/Conditions"}
+            },
+            "required": ["task_type", "modid", "name", "meta", "count"],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "task_type": {
+                "description": "Prints in chat modid, name and meta of currently held item to use with other task, conditions etc.",
+                "enum": ["IDENTIFY"]
+              },
+              "conditions": {"$ref": "#/definitions/Conditions"}
+            },
+            "required": ["task_type"],
             "additionalProperties": false
           }
         ]
